@@ -1,0 +1,41 @@
+{
+  "name": "js13k-2015-dwhiffing",
+  "version": "0.0.0",
+  "decription": "A game",
+  "repository": "dwhiffing/js13k-2015-dwhiffing",
+  "license": "MIT",
+  "main": "src/game",
+  "scripts": {
+    "build": "npm run browserify && npm run uglify && npm run assets && npm run package",
+    "browserify": "browserify src/main.js -o build.js;",
+    "uglify": "uglifyjs build.js -o build.js --overwrite --compress unsafe,screw_ie8,hoist_vars --mangle toplevel --mangle-props;",
+    "assets": "mkdir -p build; cp -R index.html build.js assets build; cd build;",
+    "package": "zip -qr9 package.zip index.html build.js assets; ls -lh package.zip",
+    "start": "watchify src/main.js -o build.js --debug & python -m SimpleHTTPServer 8080",
+    "lint": "eslint ./src ./lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "babel-preset-es2015": "^6.13.2",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "eslint": "^3.3.0",
+    "uglify-js": "^2.7.0",
+    "watchify": "^3.7.0"
+  }
+}

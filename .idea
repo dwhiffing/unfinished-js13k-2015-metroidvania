@@ -1,0 +1,50 @@
+JS13k Glitch Metroidvania
+
+  each upgrade has simple implementation which allows for user to exploit mechanics
+
+  exploits should all be discovered and fixed just enough to allow for controlled exploitation
+
+  levels should be designed to encourage the player to use these exploits
+
+  upgrades will change existing mechanics to remove/change existing exploits and add new ones
+
+  beginning of game will have linear levels to introduce this mechanic, then open a more non linear space
+
+  progression:
+
+    start of game
+      player can only walk
+
+    walk backwards
+      door that locks while you look at it
+      hold right at first
+      then hold left to moon walk through open door
+
+    unlock gun
+      shoot door to unlock it
+
+    shoot doors
+      walk backwards to shoot switch to unlock door
+
+    unlock jumping
+      jump up to get to next area
+
+    shooting in mid air allows you to hover
+      hover while bridge extends allowing you to exit
+
+    fix shot hovering
+      player has to discover wall jump
+      wall jump to get up next area
+
+    open locked doors
+      this could have many exploits for different door types
+
+    run faster
+      running faster to get through a timed room
+
+    jump forever
+      jumping to the top of a very tall room
+
+    walk through walls
+      to finish the game
+      
