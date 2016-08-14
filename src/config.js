@@ -15,11 +15,13 @@ export const components = {
 export const prefabs = {
   player: {
     unit: {
-      x: 100,
-      y: 130,
+      x: 0,
+      y: 0,
       dx: 0,
       dy: 0,
       hp: 3,
+      speed: 1,
+      jumpHeight: 2,
     },
     transform: {
       x: 0,
@@ -30,7 +32,7 @@ export const prefabs = {
     },
     sprite: {
       image: 'assets/images/sprites.png',
-      index: 2,
+      index: 4,
       size: 8,
     },
   },

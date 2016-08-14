@@ -1,16 +1,30 @@
 import game from '../../lib/game'
 import entities from '../../lib/entities'
+import screen1 from '../../assets/screens/screen1'
+
+const keyLookup = {
+  leftArrow: 37,
+  upArrow: 38,
+  rightArrow: 39,
+}
+
+const commands = {
+  left: ['leftArrow'],
+  right: ['rightArrow'],
+  jump: ['upArrow'],
+}
+
+const checkInput = (keys) => {
+  return Object.keys(commands).filter(command => {
+    const keysForCommand = commands[command]
+    return keysForCommand.some(key => keys[keyLookup[key]])
+  })
+}
 
 let player, map
 
 export function start() {
-  let mapData = []
-  for (let y = 0; y < 20; ++y) {
-    mapData.push([])
-    for (let x = 0; x < 30; ++x) {
-      mapData[y][x] = y === 19 ? 0 : 1
-    }
-  }
+  let mapData = screen1
 
   map = entities.spawn('map')
   map.tilemap.map = mapData
@@ -19,24 +33,7 @@ export function start() {
   game.stage.setCameraFollowTarget(player)
 }
 
-export function update(dt, keys) {
-  let x = 0
-  let y = 0
-  let speed = 1
-  if (keys[37]) {
-    x -= speed
-  }
-  if (keys[39]) {
-    x += speed
-  }
-  if (keys[38] && player.unit.y > 145) {
-    y -= 2
-  }
-
-  if (x !== 0 || y !== 0) {
-    player.unit.dx = x
-    player.unit.dy = y
-  }
-
-  entities.triggerAll('tick')
+export function update(delta, keys) {
+  const input = checkInput(keys)
+  entities.triggerAll('tick', [input])
 }
