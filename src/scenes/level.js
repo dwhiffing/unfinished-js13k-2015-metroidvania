@@ -30,7 +30,12 @@ export function start() {
   map.tilemap.map = mapData
 
   player = entities.spawn('player')
-  game.stage.setCameraFollowTarget(player)
+  player.unit.minX = player.sprite.size / 2
+  player.unit.maxX = map.tilemap.size * map.tilemap.map[0].length - player.sprite.size / 2
+  player.unit.maxY = map.tilemap.size * (map.tilemap.map.length - 2) + player.sprite.size / 2
+  const maxX = (mapData[0].length) * map.tilemap.size - game.width
+  const maxY = (mapData.length) * map.tilemap.size - game.height
+  game.stage.setupCamera(player, maxX, maxY)
 }
 
 export function update(delta, keys) {

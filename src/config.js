@@ -1,5 +1,5 @@
 export const width = 160
-export const height = 90
+export const height = 80
 
 export const scenes = {
   level: require('./scenes/level'),
@@ -15,8 +15,8 @@ export const components = {
 export const prefabs = {
   player: {
     unit: {
-      x: 0,
-      y: 0,
+      x: 79,
+      y: 50,
       dx: 0,
       dy: 0,
       hp: 3,

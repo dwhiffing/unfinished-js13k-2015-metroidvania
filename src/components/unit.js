@@ -1,13 +1,10 @@
-const minX = 10
-const maxX = 46
-const maxY = 36
 
 const move = (unit, dir) => {
   unit.dx = unit.speed * dir
 }
 
 const jump = (unit) => {
-  if (unit.y >= maxY) {
+  if (unit.y >= unit.maxY) {
     unit.dy = -unit.jumpHeight
   }
 }
@@ -16,11 +13,11 @@ const getNewPosition = (unit) => {
   let nx = unit.x + unit.dx
   let ny = unit.y + unit.dy
 
-  nx = nx < minX ? minX : nx
-  nx = nx > maxX ? maxX : nx
-  ny = ny > maxY ? maxY : ny
+  nx = nx < unit.minX ? unit.minX : nx
+  nx = nx > unit.maxX ? unit.maxX : nx
+  ny = ny > unit.maxY ? unit.maxY : ny
 
-  if (ny < maxY) {
+  if (ny < unit.maxY) {
     unit.dy += 0.1
   }
 
