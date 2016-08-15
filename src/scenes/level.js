@@ -1,44 +1,37 @@
-import game from '../../lib/game'
 import entities from '../../lib/entities'
-import screen1 from '../../assets/screens/screen1'
-
-const keyLookup = {
-  leftArrow: 37,
-  upArrow: 38,
-  rightArrow: 39,
-}
-
-const commands = {
-  left: ['leftArrow'],
-  right: ['rightArrow'],
-  jump: ['upArrow'],
-}
-
-const checkInput = (keys) => {
-  return Object.keys(commands).filter(command => {
-    const keysForCommand = commands[command]
-    return keysForCommand.some(key => keys[keyLookup[key]])
-  })
-}
+import mapData from '../../assets/screens/screen1'
+import { width, height } from '../config'
+import stage from '../../lib/stage'
 
 let player, map
 
 export function start() {
-  let mapData = screen1
-
   map = entities.spawn('map')
   map.tilemap.map = mapData
+  const tSize = map.tilemap.size
+
+  mapData.forEach((row, y) => {
+    row.forEach((index, x) => {
+      if (index > 0) {
+        let tile = entities.spawn('tile')
+        tile.transform.x = tSize * x
+        tile.transform.y = tSize * y
+      }
+    })
+  })
 
   player = entities.spawn('player')
-  player.unit.minX = player.sprite.size / 2
-  player.unit.maxX = map.tilemap.size * map.tilemap.map[0].length - player.sprite.size / 2
-  player.unit.maxY = map.tilemap.size * (map.tilemap.map.length - 2) + player.sprite.size / 2
-  const maxX = (mapData[0].length) * map.tilemap.size - game.width
-  const maxY = (mapData.length) * map.tilemap.size - game.height
-  game.stage.setupCamera(player, maxX, maxY)
+  const pSize = player.sprite.size
+
+  player.unit.minX = pSize / 2
+  player.unit.maxX = tSize * mapData[0].length - pSize / 2
+  player.unit.maxY = tSize * (mapData.length - 2) + pSize / 2
+
+  const maxX = mapData[0].length * tSize - width
+  const maxY = mapData.length * tSize - height
+  stage.setupCamera(player, maxX, maxY)
 }
 
-export function update(delta, keys) {
-  const input = checkInput(keys)
-  entities.triggerAll('tick', [input])
+export function update() {
+
 }

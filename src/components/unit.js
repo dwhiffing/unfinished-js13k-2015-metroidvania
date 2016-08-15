@@ -1,23 +1,87 @@
+// import { checkCollision } from '../../lib/components/collides'
 
-const move = (unit, dir) => {
-  unit.dx = unit.speed * dir
+const keyLookup = {
+  leftArrow: 37,
+  upArrow: 38,
+  rightArrow: 39,
 }
 
-const jump = (unit) => {
-  if (unit.y >= unit.maxY) {
-    unit.dy = -unit.jumpHeight
+const commands = {
+  left: ['leftArrow'],
+  right: ['rightArrow'],
+  jump: ['upArrow'],
+}
+
+const checkInput = (keys) => {
+  return Object.keys(commands).filter(command => {
+    const keysForCommand = commands[command]
+    return keysForCommand.some(key => keys[keyLookup[key]])
+  })
+}
+
+export function update(delta, keys) {
+  const unit = this.unit
+  const input = checkInput(keys)
+
+  if (input.includes('left')) {
+    unit.dx = -unit.speed
   }
-}
+  if (input.includes('right')) {
+    unit.dx = unit.speed
+  }
 
-const getNewPosition = (unit) => {
-  let nx = unit.x + unit.dx
-  let ny = unit.y + unit.dy
+  let nx = this.transform.x + unit.dx
+  let ny = this.transform.y + unit.dy
 
   nx = nx < unit.minX ? unit.minX : nx
   nx = nx > unit.maxX ? unit.maxX : nx
   ny = ny > unit.maxY ? unit.maxY : ny
 
-  if (ny < unit.maxY) {
+  if (this.collides && this.collides.colliding) {
+    this.collides.colliders.forEach(other => {
+      if (Math.abs(unit.dx) > 0) {
+        if (this.transform.y-4 <= other.transform.y && this.transform.y+4 > other.transform.y) {
+          if (this.transform.x < other.transform.x) {
+            unit.dx = 0
+            nx = other.transform.x - 8
+          }
+          if (this.transform.x > other.transform.x) {
+            unit.dx = 0
+            nx = other.transform.x + other.collides.size
+          }
+        }
+      }
+
+      // hit something from below
+      if (this.transform.y > other.transform.y) {
+        unit.dy = 0
+        ny = other.transform.y + other.collides.size + 4
+      }
+
+      // standing on something
+      if (this.transform.y < other.transform.y) {
+        if (input.includes('jump')) {
+          unit.dy = -unit.jumpHeight
+        } else {
+          unit.dy = 0
+          ny = other.transform.y - 4
+        }
+      }
+    })
+  }
+
+  // const oldX = this.transform.x
+  // const oldY = this.transform.y
+  this.transform.x = nx
+  this.transform.y = ny
+
+  // if (checkCollision(this)) {
+  //   // debugger
+  //   this.transform.x = oldX
+  //   this.transform.y = oldY
+  // }
+
+  if (!this.collides.colliding) {
     unit.dy += 0.1
   }
 
@@ -26,24 +90,5 @@ const getNewPosition = (unit) => {
     unit.dx = 0
   }
 
-  return { x: nx, y: ny }
-}
-
-export function tick(input) {
-  const unit = this.unit
-
-  if (input.includes('left')) {
-    move(unit, -1)
-  }
-  if (input.includes('right')) {
-    move(unit, 1)
-  }
-  if (input.includes('jump')) {
-    jump(unit)
-  }
-
-  const { x, y } = getNewPosition(unit)
-
-  this.transform.x = unit.x = x
-  this.transform.y = unit.y = y
+  this.collides.colliding = false
 }
