@@ -11,7 +11,7 @@
     "uglify": "uglifyjs build.js -o build.js --overwrite --compress unsafe,screw_ie8,hoist_vars --mangle toplevel --mangle-props;",
     "assets": "mkdir -p build; cp -R index.html build.js assets build; cd build;",
     "package": "zip -qr9 package.zip index.html build.js assets; ls -lh package.zip",
-    "start": "watchify src/main.js -o build.js --debug & python -m SimpleHTTPServer 8080",
+    "start": "watchify src/main.js -o build.js --debug & python -m SimpleHTTPServer 6969",
     "lint": "eslint ./src ./lib"
   },
   "files": [

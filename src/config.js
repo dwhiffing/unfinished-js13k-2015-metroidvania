@@ -9,7 +9,6 @@ export const components = {
   collides: require('../lib/components/collides'),
   transform: require('../lib/components/transform'),
   sprite: require('../lib/components/sprite'),
-  shape: require('../lib/components/shape'),
   tilemap: require('../lib/components/tilemap'),
   unit: require('./components/unit'),
 }
@@ -24,8 +23,8 @@ export const prefabs = {
       jumpHeight: 2.5,
     },
     transform: {
-      x: 79,
-      y: 50,
+      x: 20,
+      y: 20,
       sx: 1,
       sy: 1,
       r: 0,
@@ -33,6 +32,9 @@ export const prefabs = {
     collides: {
       index: 1,
       size: 8,
+      offsetX: -4,
+      offsetY: -4,
+      debug: true,
     },
     sprite: {
       image: 'assets/images/sprites.png',
@@ -66,12 +68,9 @@ export const prefabs = {
     collides: {
       index: 2,
       size: 8,
+      offsetX: 0,
+      offsetY: 0,
+      debug: true,
     },
-    // shape: {
-    //   fill: 'rgba(255,0,0,0.5)',
-    //   type: 'rect',
-    //   width: 8,
-    //   height: 8,
-    // },
   },
 }

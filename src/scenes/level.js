@@ -25,7 +25,7 @@ export function start() {
 
   player.unit.minX = pSize / 2
   player.unit.maxX = tSize * mapData[0].length - pSize / 2
-  player.unit.maxY = tSize * (mapData.length - 2) + pSize / 2
+  player.unit.maxY = tSize * mapData.length + pSize / 2
 
   const maxX = mapData[0].length * tSize - width
   const maxY = mapData.length * tSize - height
