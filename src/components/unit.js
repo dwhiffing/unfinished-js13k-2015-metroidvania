@@ -1,8 +1,5 @@
-const keyLookup = {
-  leftArrow: 37,
-  upArrow: 38,
-  rightArrow: 39,
-}
+import { getColliders } from '../../lib/components/collides'
+import checkInput from '../utils/checkInput'
 
 const commands = {
   left: ['leftArrow'],
@@ -10,63 +7,78 @@ const commands = {
   jump: ['upArrow'],
 }
 
-const checkInput = (keys) => {
-  return Object.keys(commands).filter(command => {
-    const keysForCommand = commands[command]
-    return keysForCommand.some(key => keys[keyLookup[key]])
-  })
+const checkCollisions = (thing, val, axis) => {
+  if (thing.collides) {
+    const colliders = getColliders(thing)
+    const arr = Object.keys(colliders).filter(k => !!colliders[k])
+
+    thing.collides.colliding = false
+    if (arr.length > 0) {
+      thing.collides.colliding = true
+      thing.collides.colliders = colliders
+    } else {
+      // is jumping check should go here
+      return val
+    }
+    // checking this before checking collisions allows walking off ledges and hovering
+    // should use this as a game mechanic
+    thing.unit.isJumping = true
+    Object.keys(thing.collides.colliders).forEach(key => {
+      const other = thing.collides.colliders[key]
+      if (!other) return
+      if (axis === 'x') {
+        if (key === 'right') {
+          thing.unit.dx = 0
+          val = other.transform.x - 4
+        } else if (key === 'left') {
+          thing.unit.dx = 0
+          val = other.transform.x + 12
+        }
+      } else if (axis === 'y') {
+        if (key === 'top') {
+          thing.unit.dy = 0
+          val = other.transform.y + 12
+        } else if (key === 'bottom' && thing.unit.dy >= 0) {
+          thing.unit.dy = 0
+          val = other.transform.y - 4
+          thing.unit.isJumping = false
+        }
+      }
+    })
+  }
+  return val
 }
 
 export function update(delta, keys) {
   const unit = this.unit
-  const input = checkInput(keys)
+  const input = checkInput(keys, commands)
 
   if (input.includes('left')) {
+    unit.facing = -1
     unit.dx = -unit.speed
   }
   if (input.includes('right')) {
+    unit.facing = 1
     unit.dx = unit.speed
   }
 
-  let nx = this.transform.x + unit.dx
-  let ny = this.transform.y + unit.dy
-  let canJump = false
+  let nx = this.transform.x + this.unit.dx
 
+  nx = checkCollisions(this, nx, 'x')
   nx = nx < unit.minX ? unit.minX : nx
   nx = nx > unit.maxX ? unit.maxX : nx
-  ny = ny > unit.maxY ? unit.maxY : ny
+  this.transform.x = nx
 
-  if (this.collides && this.collides.colliding) {
-    Object.keys(this.collides.colliders).forEach(key => {
-      const other = this.collides.colliders[key]
-      if (!other) return
-      if (key === 'right') {
-        unit.dx = 0
-        nx = other.transform.x - 4
-      } else if (key === 'left') {
-        unit.dx = 0
-        nx = other.transform.x + 12
-      } else if (key === 'top') {
-        unit.dy = 0
-        ny = other.transform.y + 12
-      } else if (key === 'bottom' && unit.dy >= 0) {
-        canJump = true
-        this.isJumping = false
-        unit.dy = 0
-        ny = other.transform.y - 4
-      }
-    })
-  }
-
-  if (input.includes('jump') && canJump && !this.isJumping) {
-    this.isJumping = true
+  let ny = this.transform.y + this.unit.dy
+  ny = checkCollisions(this, ny, 'y')
+  if (input.includes('jump') && !this.unit.isJumping) {
+    this.unit.isJumping = true
     unit.dy = -unit.jumpHeight
   }
-
-  this.transform.x = nx
+  ny = ny > unit.maxY ? unit.maxY : ny
   this.transform.y = ny
 
-  if (!this.collides.colliding) {
+  if (this.unit.isJumping) {
     unit.dy += 0.1
   }
 
@@ -74,6 +86,4 @@ export function update(delta, keys) {
   if (Math.abs(unit.dx) < 0.001) {
     unit.dx = 0
   }
-
-  this.collides.colliding = false
 }
