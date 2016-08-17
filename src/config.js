@@ -38,6 +38,7 @@ export const prefabs = {
       size: 8,
       offsetX: -4,
       offsetY: -4,
+      collidesWith: [2],
       // debug: true,
     },
     sprite: {
@@ -65,6 +66,13 @@ export const prefabs = {
       image: 'assets/images/sprites.png',
       index: 5,
       size: 8,
+    },
+    collides: {
+      index: 3,
+      size: 2,
+      offsetX: -2,
+      offsetY: -1,
+      collidesWith: [2],
     },
   },
   map: {
