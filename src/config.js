@@ -11,6 +11,8 @@ export const components = {
   sprite: require('../lib/components/sprite'),
   tilemap: require('../lib/components/tilemap'),
   unit: require('./components/unit'),
+  shoot: require('./components/shoot'),
+  projectile: require('./components/projectile'),
 }
 
 export const prefabs = {
@@ -21,6 +23,8 @@ export const prefabs = {
       hp: 3,
       speed: 1,
       jumpHeight: 2.5,
+      isJumping: true,
+      facing: 1,
     },
     transform: {
       x: 20,
@@ -34,11 +38,32 @@ export const prefabs = {
       size: 8,
       offsetX: -4,
       offsetY: -4,
-      debug: true,
+      // debug: true,
     },
     sprite: {
       image: 'assets/images/sprites.png',
       index: 4,
+      size: 8,
+    },
+    shoot: {
+      rate: 10,
+      delta: 0,
+    },
+  },
+  bullet: {
+    projectile: {
+      speed: 2,
+    },
+    transform: {
+      x: 0,
+      y: 0,
+      sx: 1,
+      sy: 1,
+      r: 0,
+    },
+    sprite: {
+      image: 'assets/images/sprites.png',
+      index: 5,
       size: 8,
     },
   },
@@ -70,7 +95,7 @@ export const prefabs = {
       size: 8,
       offsetX: 0,
       offsetY: 0,
-      debug: true,
+      // debug: true,
     },
   },
 }
