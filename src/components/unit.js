@@ -1,6 +1,8 @@
 import { getColliders } from '../../lib/components/collides'
 import checkInput from '../utils/checkInput'
 
+let lastFacing = 1
+
 const commands = {
   left: ['leftArrow'],
   right: ['rightArrow'],
@@ -54,20 +56,25 @@ const checkCollisions = (thing, val, axis) => {
 export function update(delta, keys) {
   const unit = this.unit
   const input = checkInput(keys, commands)
+  unit.facing = 0
 
   if (input.includes('left')) {
-    unit.facing = 2
+    unit.facing += 4
     unit.dx = -unit.speed
-  }
-  if (input.includes('right')) {
-    unit.facing = 0
+    lastFacing = 4
+  } else if (input.includes('right')) {
+    unit.facing += 1
     unit.dx = unit.speed
+    lastFacing = 1
   }
   if (input.includes('up')) {
-    unit.facing = 3
+    unit.facing += 8
+  } else if (input.includes('down')) {
+    unit.facing += 2
   }
-  if (input.includes('down')) {
-    unit.facing = 1
+
+  if (unit.facing === 0) {
+    unit.facing = lastFacing
   }
 
   let nx = this.transform.x + this.unit.dx
