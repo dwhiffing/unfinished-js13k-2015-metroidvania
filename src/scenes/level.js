@@ -1,26 +1,37 @@
 import entities from '../../lib/entities'
-import mapData from '../../assets/screens/screen1'
+import screen1 from '../../assets/screens/screen1'
 import { width, height } from '../config'
 import stage from '../../lib/stage'
 
-let player, map
+let player, map, tiles
 
-export function start() {
+export function loadMap(mapData) {
+  entities.remove(player)
+  entities.remove(map)
+  entities.remove(tiles)
+
+  tiles = []
   map = entities.spawn('map')
   map.tilemap.map = mapData
-  const tSize = map.tilemap.size
 
   mapData.forEach((row, y) => {
     row.forEach((index, x) => {
-      if (index > 0) {
+      if (index > 0 && index < 3) {
         let tile = entities.spawn('tile')
-        tile.transform.x = tSize * x
-        tile.transform.y = tSize * y
+        tile.transform.x = map.tilemap.size * x
+        tile.transform.y = map.tilemap.size * y
+        tiles.push(tile)
+      } else if (index !== 0) {
+        let tile = entities.spawn('door')
+        tile.transform.x = map.tilemap.size * x
+        tile.transform.y = map.tilemap.size * y
+        tiles.push(tile)
       }
     })
   })
-
   player = entities.spawn('player')
+
+  const tSize = map.tilemap.size
   const pSize = player.sprite.size
 
   player.unit.minX = pSize / 2
@@ -32,6 +43,9 @@ export function start() {
   stage.setupCamera(player, maxX, maxY)
 }
 
-export function update() {
 
+export function start() {
+  loadMap(screen1)
 }
+
+export function update() {}

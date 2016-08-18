@@ -13,6 +13,7 @@ export const components = {
   unit: require('./components/unit'),
   shoot: require('./components/shoot'),
   projectile: require('./components/projectile'),
+  door: require('./components/door'),
 }
 
 export const prefabs = {
@@ -39,7 +40,6 @@ export const prefabs = {
       offsetX: -4,
       offsetY: -4,
       collidesWith: [2],
-      // debug: true,
     },
     sprite: {
       image: 'assets/images/sprites.png',
@@ -103,7 +103,25 @@ export const prefabs = {
       size: 8,
       offsetX: 0,
       offsetY: 0,
-      // debug: true,
+    },
+  },
+  door: {
+    transform: {
+      x: 0,
+      y: 0,
+      sx: 1,
+      sy: 1,
+      r: 0,
+    },
+    collides: {
+      index: 3,
+      size: 8,
+      offsetX: 0,
+      offsetY: 0,
+      collidesWith: [1],
+    },
+    door: {
+      thing: 1,
     },
   },
 }
