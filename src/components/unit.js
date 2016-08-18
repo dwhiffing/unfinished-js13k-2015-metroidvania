@@ -4,7 +4,9 @@ import checkInput from '../utils/checkInput'
 const commands = {
   left: ['leftArrow'],
   right: ['rightArrow'],
-  jump: ['upArrow'],
+  jump: ['z'],
+  up: ['upArrow'],
+  down: ['downArrow'],
 }
 
 const checkCollisions = (thing, val, axis) => {
@@ -54,12 +56,18 @@ export function update(delta, keys) {
   const input = checkInput(keys, commands)
 
   if (input.includes('left')) {
-    unit.facing = -1
+    unit.facing = 2
     unit.dx = -unit.speed
   }
   if (input.includes('right')) {
-    unit.facing = 1
+    unit.facing = 0
     unit.dx = unit.speed
+  }
+  if (input.includes('up')) {
+    unit.facing = 3
+  }
+  if (input.includes('down')) {
+    unit.facing = 1
   }
 
   let nx = this.transform.x + this.unit.dx

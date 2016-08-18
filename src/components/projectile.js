@@ -1,5 +1,5 @@
 import entities from '../../lib/entities'
-import { width } from '../config'
+import { width, height } from '../config'
 import { getColliders } from '../../lib/components/collides'
 
 const checkCollisions = (thing) => {
@@ -15,8 +15,9 @@ const checkCollisions = (thing) => {
 
 export function update() {
   checkCollisions(this)
-  this.transform.x += this.projectile.speed
-  if (this.transform.x < 0 || this.transform.x > width+8) {
+  this.transform.x += this.projectile.velocity.x
+  this.transform.y += this.projectile.velocity.y
+  if (this.transform.x < 0 || this.transform.x > width + 8 || this.transform.y < 0 || this.transform.y > height + 8) {
     entities.remove(this)
   }
 }
