@@ -43,9 +43,7 @@ export function loadNewRoom(direction) {
 }
 
 export function loadMap(mapData) {
-  entities.remove(player)
-  entities.remove(map)
-  entities.remove(tiles)
+  entities.removeAll()
 
   tiles = []
   map = entities.spawn('map')
