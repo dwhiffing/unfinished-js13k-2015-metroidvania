@@ -33,18 +33,18 @@ const checkCollisions = (thing, val, axis) => {
       if (axis === 'x') {
         if (key === 'right') {
           thing.unit.dx = 0
-          val = other.transform.x - 4
+          val = other.transform.x - 4 + other.collides.offsetX
         } else if (key === 'left') {
           thing.unit.dx = 0
-          val = other.transform.x + 12
+          val = other.transform.x + 12 + other.collides.offsetX
         }
       } else if (axis === 'y') {
         if (key === 'top') {
           thing.unit.dy = 0
-          val = other.transform.y + 12
+          val = other.transform.y + 12 + other.collides.offsetY
         } else if (key === 'bottom' && thing.unit.dy >= 0) {
           thing.unit.dy = 0
-          val = other.transform.y - 4
+          val = other.transform.y - 4 + other.collides.offsetY
           thing.unit.isJumping = false
         }
       }

@@ -39,7 +39,8 @@ export const prefabs = {
       size: 8,
       offsetX: -4,
       offsetY: -4,
-      collidesWith: [2],
+      collidesWith: [2, 4],
+      debug: true,
     },
     sprite: {
       image: 'assets/images/sprites.png',
@@ -72,7 +73,7 @@ export const prefabs = {
       size: 2,
       offsetX: -2,
       offsetY: -1,
-      collidesWith: [2],
+      collidesWith: [2, 4],
     },
   },
   map: {
@@ -103,6 +104,7 @@ export const prefabs = {
       size: 8,
       offsetX: 0,
       offsetY: 0,
+      debug: true,
     },
   },
   door: {
@@ -114,14 +116,20 @@ export const prefabs = {
       r: 0,
     },
     collides: {
-      index: 3,
+      index: 4,
       size: 8,
-      offsetX: 0,
-      offsetY: 0,
+      offsetX: -4,
+      offsetY: -4,
       collidesWith: [1, 3],
+      debug: true,
     },
     door: {
       thing: 1,
+    },
+    sprite: {
+      image: 'assets/images/sprites.png',
+      index: 6,
+      size: 8,
     },
   },
 }

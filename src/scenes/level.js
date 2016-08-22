@@ -4,7 +4,7 @@ import dungeon from '../../assets/screens/map'
 import { width, height } from '../config'
 import stage from '../../lib/stage'
 
-let player, map, tiles, mapIndex, dungeonIndex, door, enteredDoor, enteredDirection
+let player, map, tiles, mapIndex, dungeonIndex, enteredDoor, enteredDirection
 dungeonIndex = { x: 0, y: 5 }
 
 export function loadRoom() {
@@ -29,15 +29,15 @@ export function loadNewRoom(direction) {
   const size = map.tilemap.size * 20
   if (direction === 0) {
     player.transform.x = 12
-    player.transform.y = enteredDoor.transform.y + 5
+    player.transform.y = enteredDoor.transform.y
   } else if (direction === 1) {
     player.transform.y = 12
     player.transform.x = enteredDoor.transform.x
   } else if (direction === 2) {
     player.transform.x = size - 12
-    player.transform.y = enteredDoor.transform.y + 8
+    player.transform.y = enteredDoor.transform.y
   } else {
-    player.transform.x = enteredDoor.transform.x + 8
+    player.transform.x = enteredDoor.transform.x
     player.transform.y = size - 50
   }
 }
@@ -51,13 +51,18 @@ export function loadMap(mapData) {
 
   mapData.forEach((row, y) => {
     row.forEach((index, x) => {
-      if (index > 0 && index < 3) {
-        let tile = entities.spawn('tile')
+      let tile
+      if (index > 0) {
+        tile = entities.spawn('tile')
         tile.transform.x = map.tilemap.size * x
         tile.transform.y = map.tilemap.size * y
         tiles.push(tile)
-      } else if (index !== 0) {
-        door = entities.spawn('door')
+      }
+      if (index === 3) {
+        delete tile.collides
+        let door = entities.spawn('door')
+        door.transform.x = map.tilemap.size * x + 4
+        door.transform.y = map.tilemap.size * y + 4
         if (x === row.length - 1) {
           door.direction = 0
           if (enteredDirection === 2) {
@@ -79,9 +84,6 @@ export function loadMap(mapData) {
           }
           door.direction = 3
         }
-        door.transform.x = map.tilemap.size * x
-        door.transform.y = map.tilemap.size * y
-        tiles.push(door)
       }
     })
   })
