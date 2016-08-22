@@ -4,7 +4,7 @@ import dungeon from '../../assets/screens/map'
 import { width, height } from '../config'
 import stage from '../../lib/stage'
 
-let player, map, tiles, mapIndex, dungeonIndex, door
+let player, map, tiles, mapIndex, dungeonIndex, door, enteredDoor, enteredDirection
 dungeonIndex = { x: 0, y: 5 }
 
 export function loadRoom() {
@@ -15,6 +15,7 @@ export function loadRoom() {
 }
 
 export function loadNewRoom(direction) {
+  enteredDirection = direction
   if (direction === 0) {
     dungeonIndex.x += 1
   } else if (direction === 1) {
@@ -27,17 +28,17 @@ export function loadNewRoom(direction) {
   loadRoom()
   const size = map.tilemap.size * 20
   if (direction === 0) {
-    player.transform.x = 20
-    player.transform.y = door.transform.y + 8
+    player.transform.x = 12
+    player.transform.y = enteredDoor.transform.y + 5
   } else if (direction === 1) {
-    player.transform.y = 20
-    player.transform.x = door.transform.x
+    player.transform.y = 12
+    player.transform.x = enteredDoor.transform.x
   } else if (direction === 2) {
-    player.transform.x = size - 20
-    player.transform.y = door.transform.y + 8
+    player.transform.x = size - 12
+    player.transform.y = enteredDoor.transform.y + 8
   } else {
-    player.transform.x = door.transform.x + 8
-    player.transform.y = size - 20
+    player.transform.x = enteredDoor.transform.x + 8
+    player.transform.y = size - 50
   }
 }
 
@@ -61,11 +62,23 @@ export function loadMap(mapData) {
         door = entities.spawn('door')
         if (x === row.length - 1) {
           door.direction = 0
+          if (enteredDirection === 2) {
+            enteredDoor = door
+          }
         } else if (y === mapData.length - 1) {
           door.direction = 1
+          if (enteredDirection === 3) {
+            enteredDoor = door
+          }
         } else if (x === 0) {
+          if (enteredDirection === 0) {
+            enteredDoor = door
+          }
           door.direction = 2
         } else {
+          if (enteredDirection === 1) {
+            enteredDoor = door
+          }
           door.direction = 3
         }
         door.transform.x = map.tilemap.size * x

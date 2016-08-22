@@ -1,4 +1,4 @@
-import { getColliders } from '../../lib/components/collides'
+import { getColliderDirections } from '../../lib/components/collides'
 import checkInput from '../utils/checkInput'
 
 let lastFacing = 1
@@ -13,7 +13,7 @@ const commands = {
 
 const checkCollisions = (thing, val, axis) => {
   if (thing.collides) {
-    const colliders = getColliders(thing)
+    const colliders = getColliderDirections(thing)
     const arr = Object.keys(colliders).filter(k => !!colliders[k])
 
     thing.collides.colliding = false

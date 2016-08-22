@@ -118,7 +118,7 @@ export const prefabs = {
       size: 8,
       offsetX: 0,
       offsetY: 0,
-      collidesWith: [1],
+      collidesWith: [1, 3],
     },
     door: {
       thing: 1,
